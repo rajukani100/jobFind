@@ -1,4 +1,5 @@
 import './../../index.css'
+import './../../style.css'
 import '../../components/navbar/navbar'
 
 export default function AboutPage() {

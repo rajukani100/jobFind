@@ -1,5 +1,6 @@
 import TopNav from "../../components/navbar/navbar";
 import './../../index.css'
+import './../../style.css'
 import '../../components/job-card/jobCard'
 import CustomFooter from "../../components/footer/footer";
 import JobCard from "../../components/job-card/jobCard";
