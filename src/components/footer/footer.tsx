@@ -2,34 +2,37 @@ import { Link } from "react-router-dom";
 
 export default function CustomFooter() {
     return (
-        <>
-            <footer className="shadow bg-gray-700">
-                <div className="w-full max-w-screen-xl mx-auto p-4 md:py-8">
-                    <div className="sm:flex sm:items-center sm:justify-between">
-                        <Link to={"/"}>
-                            <div className="text-gray-500 flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse">
-                                <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">jobFind</span>
-                            </div>
-                        </Link>
-                        <ul className="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400">
-                            <li>
-                                <div className="hover:underline me-4 md:me-6">About</div>
+        <footer className="bg-gray-700 shadow-lg">
+            <div className="w-full max-w-screen-xl mx-auto px-4 py-6 md:py-10">
+                <div className="sm:flex sm:items-center sm:justify-between">
+                    <Link to={"/"} className="flex items-center mb-4 sm:mb-0">
+                        <span className="self-center text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-300 hover:from-blue-200 hover:to-white transition-colors duration-300">
+                            jobFind
+                        </span>
+                    </Link>
+
+                    <ul className="flex flex-wrap items-center text-sm font-medium text-gray-300 space-x-4">
+                        {['About', 'Privacy Policy', 'Licensing', 'Contact'].map((item) => (
+                            <li key={item}>
+                                <div className="hover:text-white hover:underline underline-offset-4 transition-all duration-200 cursor-pointer">
+                                    {item}
+                                </div>
                             </li>
-                            <li>
-                                <div className="hover:underline me-4 md:me-6">Privacy Policy</div>
-                            </li>
-                            <li>
-                                <div className="hover:underline me-4 md:me-6">Licensing</div>
-                            </li>
-                            <li>
-                                <div className="hover:underline">Contact</div>
-                            </li>
-                        </ul>
-                    </div>
-                    <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
-                    <span className="block text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2024 <a href="https://flowbite.com/" className="hover:underline">jobFind™</a>. All Rights Reserved.</span>
+                        ))}
+                    </ul>
                 </div>
-            </footer>
-        </>
+
+                <hr className="my-6 border-gray-600 sm:mx-auto lg:my-8" />
+
+                <div className="text-center text-gray-400 text-sm">
+                    <span>© 2024
+                        <span className="mx-2 text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-300 font-semibold">
+                            jobFind™
+                        </span>
+                        All Rights Reserved.
+                    </span>
+                </div>
+            </div>
+        </footer>
     );
 }
