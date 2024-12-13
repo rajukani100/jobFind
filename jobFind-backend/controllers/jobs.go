@@ -105,3 +105,34 @@ func GetJobsList(c *gin.Context) {
 
 	c.JSON(http.StatusOK, jobs)
 }
+
+func GetJob(c *gin.Context) {
+	postId := c.Param("p_id")
+
+	query := `SELECT company_name, role, description, level, posted_date, location, id, ctc FROM job_listings WHERE id = $1`
+
+	pool, err := database.InitDB()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
+		os.Exit(1)
+	}
+	defer pool.Close()
+
+	var job model.Job
+	err = pool.QueryRow(context.Background(), query, postId).Scan(&job.Company,
+		&job.Role,
+		&job.Description,
+		&job.Level,
+		&job.Posted_date,
+		&job.Location,
+		&job.Id,
+		&job.Ctc)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error fetching data"})
+		return
+	}
+
+	c.JSON(http.StatusOK, job)
+
+}

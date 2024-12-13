@@ -11,7 +11,9 @@ func main() {
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 
+	// routes
 	r.GET("/jobs", controllers.GetJobsList)
+	r.GET("/job/:p_id", controllers.GetJob)
 
 	r.Run(":8080")
 }
