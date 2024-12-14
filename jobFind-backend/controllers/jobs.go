@@ -63,7 +63,7 @@ func GetJobsList(c *gin.Context) {
 	}
 
 	//adding pageNumber to query
-	queryBuilder.WriteString(fmt.Sprintf(` LIMIT 12 OFFSET %d`, (pageNumber-1)*12))
+	queryBuilder.WriteString(fmt.Sprintf(` LIMIT 15 OFFSET %d`, (pageNumber-1)*15))
 
 	var rows pgx.Rows
 	var params []interface{}
@@ -90,11 +90,18 @@ func GetJobsList(c *gin.Context) {
 
 	defer rows.Close()
 
-	var jobs [12]model.Job
-	i := 0
+	jobs := make([]model.Job, 0, 15)
 	for rows.Next() {
-		rows.Scan(&jobs[i].Company, &jobs[i].Role, &jobs[i].Description, &jobs[i].Level, &jobs[i].Posted_date, &jobs[i].Location, &jobs[i].Id, &jobs[i].Ctc)
-		i++
+
+		var job model.Job
+
+		err := rows.Scan(&job.Company, &job.Role, &job.Description, &job.Level, &job.Posted_date, &job.Location, &job.Id, &job.Ctc)
+
+		if err != nil {
+			log.Printf("Error scanning row: %v", err)
+			continue
+		}
+		jobs = append(jobs, job)
 
 	}
 	if rows.Err() != nil {
