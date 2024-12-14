@@ -21,7 +21,7 @@ func GetJobsList(c *gin.Context) {
 	searchQuery := c.Query("search")
 	cityQuery := c.Query("city")
 	levelQuery := c.Query("level")
-	// typeQuery := c.Query("type")
+	typeQuery := c.Query("type")
 
 	if err != nil || pageNumber <= 0 {
 		pageNumber = 1
@@ -53,10 +53,10 @@ func GetJobsList(c *gin.Context) {
 		whereClauses = append(whereClauses, fmt.Sprintf(`level ILIKE $%d`, paramIndex))
 		paramIndex++
 	}
-	// if typeQuery != "" {
-	// 	whereClauses = append(whereClauses, fmt.Sprintf(`type = $%d`, paramIndex))
-	// 	paramIndex++
-	// }
+	if typeQuery != "" {
+		whereClauses = append(whereClauses, fmt.Sprintf(`type ILIKE $%d`, paramIndex))
+		paramIndex++
+	}
 	if len(whereClauses) > 0 {
 		queryBuilder.WriteString(" WHERE ")
 		queryBuilder.WriteString(strings.Join(whereClauses, " AND "))
@@ -77,9 +77,9 @@ func GetJobsList(c *gin.Context) {
 	if levelQuery != "" {
 		params = append(params, levelQuery)
 	}
-	// if typeQuery != "" {
-	// 	params = append(params, typeQuery)
-	// }
+	if typeQuery != "" {
+		params = append(params, typeQuery)
+	}
 
 	rows, err = pool.Query(context.Background(), queryBuilder.String(), params...)
 
