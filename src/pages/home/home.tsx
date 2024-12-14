@@ -61,10 +61,6 @@ const HomePage: React.FC = () => {
                                     <input type="checkbox" name="intership" className="input-checkbox" />
                                     <label htmlFor="internship"> Internship</label>
                                 </div>
-                                <div className="px-3 items-center">
-                                    <input type="checkbox" name="remote" className="input-checkbox" />
-                                    <label htmlFor="remote"> Remote</label>
-                                </div>
                             </div>
 
                             <div className="pt-2">
@@ -73,18 +69,26 @@ const HomePage: React.FC = () => {
                                 </div>
                                 <div className="px-3 pt-2 items-center">
                                     <input type="checkbox" name="entrylevel" className="input-checkbox" />
-                                    <label htmlFor="entrylevel"> Entry level</label>
+                                    <label htmlFor="entrylevel"> Entry-level</label>
                                 </div>
                                 <div className="px-3 items-center">
-                                    <input type="checkbox" name="intermediate" className="input-checkbox" />
-                                    <label htmlFor="intermediate"> Intermediate</label>
+                                    <input type="checkbox" name="midlevel" className="input-checkbox" />
+                                    <label htmlFor="midlevel"> Mid-level</label>
+                                </div>
+                                <div className="px-3 items-center">
+                                    <input type="checkbox" name="senior" className="input-checkbox" />
+                                    <label htmlFor="senior"> Senior</label>
+                                </div>
+                                <div className="px-3 items-center">
+                                    <input type="checkbox" name="lead" className="input-checkbox" />
+                                    <label htmlFor="lead"> Lead</label>
                                 </div>
                                 <div className="px-3 items-center">
                                     <input type="checkbox" name="expert" className="input-checkbox" />
                                     <label htmlFor="expert"> Expert</label>
                                 </div>
-
                             </div>
+
                         </div>
                         <div className="mx-7 w-full flex flex-wrap gap-2">
                             <JobCard companyName={"test"} />
