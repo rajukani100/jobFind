@@ -3,6 +3,7 @@ package main
 import (
 	"jobfind/controllers"
 	databse "jobfind/database"
+	"log"
 
 	"github.com/gin-gonic/gin"
 )
@@ -14,6 +15,7 @@ func main() {
 
 	//database pool connection
 	databse.InitDB()
+	defer databse.ConnPool.Close()
 
 	// routes
 	r.GET("/jobs", controllers.GetJobsList)
@@ -22,5 +24,8 @@ func main() {
 	r.POST("/register", controllers.Register)
 	r.POST("/login", controllers.Login)
 
-	r.Run(":8080")
+	if err := r.Run(":8080"); err != nil {
+		log.Fatalf("Failed to start server: %v", err)
+	}
+
 }
