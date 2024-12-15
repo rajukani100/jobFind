@@ -10,5 +10,5 @@ type Job struct {
 	Posted_date time.Time `json:"posted_date"`
 	Location    string    `json:"location"`
 	Id          string    `json:"id"`
-	Ctc         int       `json:"ctc			"`
+	Ctc         int       `json:"ctc"`
 }
