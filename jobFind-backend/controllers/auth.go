@@ -19,8 +19,14 @@ func Register(c *gin.Context) {
 	}
 
 	//check user is exist or not
-	if services.CheckUserExist(&userReq.Email) {
-		c.JSON(http.StatusConflict, gin.H{"error": "User already exists."})
+	isUserExist, err := services.CheckUserExist(userReq.Email)
+	if err != nil {
+		log.Print("Error while checking user existance.")
+		return
+	}
+
+	if isUserExist {
+		c.JSON(http.StatusConflict, gin.H{"error": "user already exist"})
 		return
 	}
 
@@ -35,10 +41,25 @@ func Register(c *gin.Context) {
 
 	var userId string
 	if err := row.Scan(&userId); err != nil {
-		log.Fatal("error while fetching user id")
+		log.Print("error while fetching user id")
+		return
 	}
 
 	//generate jwt
+	accessToken, refreshToken, err := services.GenerateJWT(userId)
+	if err != nil {
+		log.Print("Error while generating jwt")
+		return
+	}
+
+	if err := database.SaveJwtTokens(userId, accessToken, refreshToken); err != nil {
+		log.Print("Error while saving jwt token")
+		return
+	}
+
+	// Set cookies for tokens
+	c.SetCookie("access_token", accessToken, 15*60, "/", "localhost", false, true)        // 15 minutes
+	c.SetCookie("refresh_token", refreshToken, 7*24*60*60, "/", "localhost", false, true) // 7 days
 
 	c.JSON(http.StatusOK, userReq)
 }
