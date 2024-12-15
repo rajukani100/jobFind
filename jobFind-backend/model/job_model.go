@@ -11,4 +11,5 @@ type Job struct {
 	Location    string    `json:"location"`
 	Id          string    `json:"id"`
 	Ctc         int       `json:"ctc"`
+	Type        string    `json:"type"`
 }
