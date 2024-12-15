@@ -6,25 +6,23 @@ import (
 	"log"
 )
 
-func CheckUserExist(email *string) bool {
+func CheckUserExist(email string) (bool, error) {
+	// Acquire a connection from the pool
 	conn, err := databse.ConnPool.Acquire(context.Background())
-	defer conn.Release()
 	if err != nil {
-		log.Fatal("Error while checking existance of user", err)
+		log.Printf("Error acquiring database connection: %v", err)
+		return false, err
+	}
+	defer conn.Release()
+
+	// Query to check if the user exists
+	var exists bool
+	query := `SELECT EXISTS(SELECT 1 FROM users WHERE email ILIKE $1)`
+	err = conn.QueryRow(context.Background(), query, email).Scan(&exists)
+	if err != nil {
+		log.Printf("Error querying database: %v", err)
+		return false, err
 	}
 
-	row := conn.QueryRow(context.Background(), `SELECT * FROM users WHERE email ILIKE $1`, email)
-
-	var db_email string
-
-	if err = row.Scan(&db_email); err != nil {
-		log.Fatal("Error: ", err)
-	}
-
-	if db_email != *email {
-		return false
-	} else {
-		return true
-	}
-
+	return exists, nil
 }
