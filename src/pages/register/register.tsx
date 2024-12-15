@@ -10,7 +10,10 @@ const Register = () => {
 
                 < Input type="text" placeholder="Name" className="mb-4 focus-visible:ring-transparent" />
                 <Input type="email" placeholder="Email" className="mb-4 focus-visible:ring-transparent" />
-                <Input type="password" placeholder="Password" className="mb-4 focus-visible:ring-transparent" />
+                <Input type="password" placeholder="Password" className="mb-2 focus-visible:ring-transparent" />
+                <div className="w-full text-sm mb-2 ml-3">
+                    <div>Already have account<Link to={"/login"}><span className="text-cyan-400 cursor-pointer ml-1"> Login</span></Link></div>
+                </div>
                 <Link className={buttonVariants({ variant: "outline", className: "bg-cyan-400 hover:bg-cyan-300 font-bold text-white hover:text-white w-full" })} to={"/"} > Submit </Link>
 
 
