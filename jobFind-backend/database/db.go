@@ -2,21 +2,24 @@ package databse
 
 import (
 	"context"
+	"log"
 	"os"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/joho/godotenv"
 )
 
-func InitDB() (*pgxpool.Pool, error) {
-	err := godotenv.Load(`D:\development\goLang\jobFind\jobFind-backend\database\.env`)
+var ConnPool *pgxpool.Pool
 
+func InitDB() {
+	err := godotenv.Load(`D:\development\goLang\jobFind\jobFind-backend\database\.env`)
 	if err != nil {
-		return nil, err
+		log.Print("Error while .env read", err)
+		return
 	}
-	pool, err := pgxpool.New(context.Background(), os.Getenv("DATABASE_URL"))
+	ConnPool, err = pgxpool.New(context.Background(), os.Getenv("DATABASE_URL"))
 	if err != nil {
-		return nil, err
+		log.Print("Error while db connection", err)
+		return
 	}
-	return pool, nil
 }
