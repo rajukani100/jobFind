@@ -33,7 +33,7 @@ func Register(c *gin.Context) {
 	}
 
 	if isUserExist {
-		c.JSON(http.StatusConflict, gin.H{"error": "user already exist"})
+		c.JSON(http.StatusConflict, gin.H{"error": "User Already Exist."})
 		return
 	}
 
@@ -68,7 +68,7 @@ func Register(c *gin.Context) {
 	c.SetCookie("access_token", accessToken, 15*60, "/", "localhost", false, true)        // 15 minutes
 	c.SetCookie("refresh_token", refreshToken, 7*24*60*60, "/", "localhost", false, true) // 7 days
 
-	c.JSON(http.StatusOK, userReq)
+	c.JSON(http.StatusOK, gin.H{"message": "Account created successfully."})
 }
 
 func Login(c *gin.Context) {

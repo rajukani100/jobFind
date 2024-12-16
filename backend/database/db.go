@@ -12,7 +12,7 @@ import (
 var ConnPool *pgxpool.Pool
 
 func InitDB() {
-	err := godotenv.Load(`D:\development\goLang\jobFind\jobFind-backend\database\.env`)
+	err := godotenv.Load(`D:\development\goLang\jobFind\backend\database\.env`)
 	if err != nil {
 		log.Print("Error while .env read", err)
 		return
