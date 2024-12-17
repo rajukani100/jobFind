@@ -1,7 +1,8 @@
 import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ChangeEvent, FormEvent, useState } from "react";
-import { Link } from "react-router-dom";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { IsAuthenticated } from '../../services/auth'
 
 type FormData = {
     name: string;
@@ -10,6 +11,17 @@ type FormData = {
 };
 
 const Register = () => {
+
+    const navigate = useNavigate();
+    useEffect(() => {
+        const verifyAuth = async () => {
+            if (await IsAuthenticated()) {
+                navigate("/");
+            }
+        }
+        verifyAuth();
+    }, [navigate]);
+
     const [formData, setFormData] = useState<FormData>({
         name: "",
         email: "",

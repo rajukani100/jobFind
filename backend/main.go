@@ -33,6 +33,7 @@ func main() {
 	r.GET("/jobs", controllers.GetJobsList)
 	r.GET("/job/:p_id", controllers.GetJob)
 
+	r.GET("/check-auth", controllers.AuthCheck)
 	r.POST("/register", controllers.Register)
 	r.POST("/login", controllers.Login)
 
