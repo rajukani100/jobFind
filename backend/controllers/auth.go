@@ -138,3 +138,66 @@ func Login(c *gin.Context) {
 	c.JSON(http.StatusOK, userReq)
 
 }
+
+func AuthCheck(c *gin.Context) {
+
+	// Read access token cookie
+	accessToken, err := c.Cookie("access_token")
+
+	if err == nil && accessToken != "" {
+		_, err := services.VerifyJwt(accessToken)
+		if err == nil {
+			// Token is valid, redirect to homepage
+			c.JSON(http.StatusOK, gin.H{"message": "User Already authenticated."})
+			return
+		}
+
+		// Handle expired access token
+		if err.Error() == "token expired" {
+			refreshToken, err := c.Cookie("refresh_token")
+			if err == nil && refreshToken != "" {
+				// Validate the refresh token
+				refreshUserId, err := services.VerifyJwt(refreshToken)
+				if err == nil {
+					// Generate a new access token
+					newAccessToken, _, err := services.GenerateJWT(refreshUserId)
+					if err != nil {
+						log.Printf("Error generating new access token: %v", err)
+						c.JSON(http.StatusUnauthorized, gin.H{"error": "Unable to refresh token, please login again."})
+						return
+					}
+
+					// Set new access token cookie
+					c.SetCookie("access_token", newAccessToken, 15*60, "/", "localhost", false, true) // 15 minutes
+					c.JSON(http.StatusOK, gin.H{"message": "Token refreshed"})
+					return
+				}
+			}
+			// Redirect to login if refresh token is invalid or missing
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Session expired, please login again."})
+			return
+		}
+	}
+
+	refreshToken, err := c.Cookie("refresh_token")
+	if err == nil && refreshToken != "" {
+		// Validate the refresh token
+		refreshUserId, err := services.VerifyJwt(refreshToken)
+		if err == nil {
+			// Generate a new access token
+			newAccessToken, _, err := services.GenerateJWT(refreshUserId)
+			if err != nil {
+				log.Printf("Error generating new access token: %v", err)
+				c.JSON(http.StatusUnauthorized, gin.H{"error": "Unable to refresh token, please login again."})
+				return
+			}
+
+			// Set new access token cookie
+			c.SetCookie("access_token", newAccessToken, 15*60, "/", "localhost", false, true) // 15 minutes
+			c.JSON(http.StatusOK, gin.H{"message": "Token refreshed"})
+			return
+		}
+	}
+
+	c.JSON(http.StatusUnauthorized, gin.H{"message": "Invalid session, proceed to login/register"})
+}
