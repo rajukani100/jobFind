@@ -1,6 +1,8 @@
 package services
 
 import (
+	"errors"
+	"log"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -33,4 +35,50 @@ func GenerateJWT(userID string) (string, string, error) {
 	}
 
 	return accessTokenString, refreshTokenString, nil
+}
+
+func VerifyJwt(tokenString string) (string, error) {
+	// Parse the JWT token
+	token, err := jwt.Parse(tokenString, func(t *jwt.Token) (interface{}, error) {
+		// Validate the token's signing method
+		if t.Method != jwt.SigningMethodHS256 {
+			return nil, errors.New("unexpected signing method, expected HS256")
+		}
+		// Return the secret key used for verifying the token
+		return jwtSecret, nil
+	})
+
+	if err != nil {
+		log.Printf("Error parsing JWT: %v", err)
+		return "", err
+	}
+
+	// Check if the token is valid
+	if !token.Valid {
+		return "", errors.New("invalid token")
+	}
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+
+	if !ok {
+		return "", errors.New("failed to extract claims")
+	}
+
+	expirationTime, ok := claims["exp"].(float64)
+	if !ok {
+		return "", errors.New("expiration time not found in token")
+	}
+
+	expTime := time.Unix(int64(expirationTime), 0)
+
+	if expTime.Before(time.Now()) {
+		return "", errors.New("token expired")
+	}
+
+	userId, ok := claims["userid"].(string)
+	if !ok {
+		return "", errors.New("userid not found in token")
+	}
+
+	return userId, nil
 }
