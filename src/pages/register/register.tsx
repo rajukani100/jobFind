@@ -61,6 +61,7 @@ const Register = () => {
             // Handle successful response
             const successData = await response.json()
             setSuccessMessage(successData.message);
+            navigate("/")
         } catch (error: any) {
             if (error instanceof Error) {
                 setError(error.message);
@@ -69,8 +70,8 @@ const Register = () => {
             }
         }
     };
-
     return (
+
         <div className="w-full h-screen flex items-center justify-center">
             <div className="w-1/3 h-fit p-6 flex flex-col items-center justify-center bg-white shadow-md rounded-lg border-[1px]">
                 <div className="text-3xl mb-4">Register</div>

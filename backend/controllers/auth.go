@@ -135,7 +135,7 @@ func Login(c *gin.Context) {
 	c.SetCookie("access_token", accessToken, 15*60, "/", "localhost", false, true)        // 15 minutes
 	c.SetCookie("refresh_token", refreshToken, 7*24*60*60, "/", "localhost", false, true) // 7 days
 
-	c.JSON(http.StatusOK, userReq)
+	c.JSON(http.StatusOK, gin.H{"message": "Logged in"})
 
 }
 
