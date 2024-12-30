@@ -4,8 +4,30 @@ import './../../style.css'
 import '../../components/job-card/jobCard'
 import CustomFooter from "../../components/footer/footer";
 import JobCard from "../../components/job-card/jobCard";
+import { useEffect, useState } from "react";
+import getAllJobs from "@/services/getJobs";
 
-const HomePage: React.FC = () => {
+const HomePage = () => {
+
+    const [jobs, setJobs] = useState([]);
+
+    useEffect(() => {
+        const fetchJobs = async () => {
+            try {
+                const jobData = await getAllJobs(1);
+                console.log(jobData);
+
+                setJobs(jobData);
+            } catch (error) {
+                console.error("Failed to fetch jobs:", error);
+            }
+        };
+
+        fetchJobs();
+    }, [])
+
+
+
     return (
         <>
             <div className="w-full h-full">
@@ -91,25 +113,20 @@ const HomePage: React.FC = () => {
 
                         </div>
                         <div className="mx-7 w-full flex flex-wrap gap-2">
-                            <JobCard companyName={"test"} />
-                            <JobCard companyName={"test"} />
-                            <JobCard companyName={"test"} />
-                            <JobCard companyName={"test"} />
-                            <JobCard companyName={"test"} />
-                            <JobCard companyName={"test"} />
-                            <JobCard companyName={"test"} />
-                            <JobCard companyName={"test"} />
-                            <JobCard companyName={"test"} />
-                            <JobCard companyName={"test"} />
-                            <JobCard companyName={"test"} />
-                            <JobCard companyName={"test"} />
-                            <JobCard companyName={"test"} />
-                            <JobCard companyName={"test"} />
+                            {jobs.map((job: any) => (
+                                <JobCard key={job.id} companyName={job.company} description={job.description} role={job.role} level={job.level} posted_time={job.posted_date} />
+                            ))}
                         </div>
+                    </div>
+
+                    <div>
+
                     </div>
                     <div className="h-6">
 
+
                     </div>
+
                 </div>
 
 
