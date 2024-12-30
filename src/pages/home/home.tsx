@@ -15,8 +15,6 @@ const HomePage = () => {
         const fetchJobs = async () => {
             try {
                 const jobData = await getAllJobs(1);
-                console.log(jobData);
-
                 setJobs(jobData);
             } catch (error) {
                 console.error("Failed to fetch jobs:", error);
@@ -114,7 +112,7 @@ const HomePage = () => {
                         </div>
                         <div className="mx-7 w-full flex flex-wrap gap-2">
                             {jobs.map((job: any) => (
-                                <JobCard key={job.id} companyName={job.company} description={job.description} role={job.role} level={job.level} posted_time={job.posted_date} />
+                                <JobCard key={job.id} companyName={job.company} description={job.description} role={job.role} level={job.level} posted_time={job.posted_date} id={job.id} />
                             ))}
                         </div>
                     </div>

@@ -1,5 +1,5 @@
 import { formatDistanceToNow } from "date-fns";
-import React, { useEffect } from "react";
+import { NavLink } from "react-router-dom";
 
 type JobCardProps = {
     companyName: string;
@@ -8,12 +8,13 @@ type JobCardProps = {
     role?: string;        // Optional, has a default value
     level?: string;
     posted_time?: string;
+    id?: string;
 };
 
-const JobCard: React.FC<JobCardProps> = ({
+const JobCard = ({
     companyName,
+    id,
     description = "",
-    ctc = "",
     level = "",
     role = "",
     posted_time = "",
@@ -47,11 +48,13 @@ const JobCard: React.FC<JobCardProps> = ({
             <div className="h-3"></div>
             <div className="flex justify-between items-center pt-2 px-3 rounded-lg">
                 {/* "View More" Button */}
-                <div
-                    className="text-base font-medium cursor-pointer text-blue-600 hover:text-blue-800 transition duration-200"
-                >
-                    View More
-                </div>
+                <NavLink to={`http://localhost:5173/job/${id}`}>
+                    <div
+                        className="text-base font-medium cursor-pointer text-blue-600 hover:text-blue-800 transition duration-200"
+                    >
+                        View More
+                    </div>
+                </NavLink>
 
                 <div className="text-xs text-gray-500 italic flex items-center">
                     <svg
