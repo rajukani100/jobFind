@@ -10,11 +10,12 @@ import getAllJobs from "@/services/getJobs";
 const HomePage = () => {
 
     const [jobs, setJobs] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
         const fetchJobs = async () => {
             try {
-                const jobData = await getAllJobs(1);
+                const jobData = await getAllJobs(currentPage);
                 setJobs(jobData);
             } catch (error) {
                 console.error("Failed to fetch jobs:", error);
@@ -22,9 +23,14 @@ const HomePage = () => {
         };
 
         fetchJobs();
-    }, [])
+    }, [currentPage])
 
-
+    const handleNextPage = () => {
+        setCurrentPage(currentPage + 1);
+    }
+    const handlePreviousPage = () => {
+        setCurrentPage(currentPage - 1);
+    }
 
     return (
         <>
@@ -123,6 +129,31 @@ const HomePage = () => {
                     <div className="h-6">
 
 
+                    </div>
+                    <div className="flex justify-center gap-4 mt-6">
+                        <button
+                            onClick={handlePreviousPage}
+                            disabled={currentPage === 1}
+                            className={`px-4 py-2 rounded-lg text-white ${currentPage === 1
+                                ? 'bg-gray-400 cursor-not-allowed'
+                                : 'bg-blue-500 hover:bg-blue-600'
+                                }`}
+                        >
+                            Previous
+                        </button>
+                        <span className="flex items-center text-white">
+                            Page {currentPage}
+                        </span>
+                        <button
+                            onClick={handleNextPage}
+                            disabled={jobs.length === 0}
+                            className={`px-4 py-2 rounded-lg text-white ${jobs.length === 0
+                                ? 'bg-gray-400 cursor-not-allowed'
+                                : 'bg-blue-500 hover:bg-blue-600'
+                                }`}
+                        >
+                            Next
+                        </button>
                     </div>
 
                 </div>
